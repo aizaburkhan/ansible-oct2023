@@ -1,0 +1,26 @@
+- hosts: all
+  tasks:
+  - name: install the list of packages Apache
+    yum:
+      name: git
+      state: latest
+    notify: restart httpd #if the task above is changed then the handle with name  is executed
+  - name: Install zip
+    yum: 
+      name: unzip
+      state: present
+    notify: Install tree
+  handlers: #condition to not execute -until we specify to do so
+  - name: restart httpd
+    service:
+      name: httpd
+      state: restarted\
+  - name: 
+    yum:
+      name: wget
+      state: present
+  - name: Install tree
+    yum: 
+      name: tree
+      state: present
+    
