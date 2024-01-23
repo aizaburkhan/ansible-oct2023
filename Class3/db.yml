@@ -1,0 +1,37 @@
+- name: install Maria DB
+  yum:
+    name: 
+      - mariadb
+      - mariadb-server
+    state: latest
+
+- name: Start service mariadb, if not started
+  service:
+    name: mariadb
+    state: started
+    enabled: yes
+- name: Create a new database with name 'wordpress'
+  shell: mysql -e "create database if not exists wordpress;" #so mysql will execute this command inside mysql
+  mysql_db:
+    name: wp
+    state: present
+- name: Create a user, if not exists
+  shell: mysql -e "select 1 from mysql.user where user = 'kaizen';" | grep -q 1
+  register: user_check #alias/variable name for the shell command 
+  ignore_errors: yes 
+
+- name: Create a user
+  shell: mysql -e "CREATE USER kaizen@localhost IDENTIFIED BY 'kaizen123';"
+  when: user_check.rc != 0 # when returch code is not 0, then create the user.
+
+- name: Grant privileges
+  shell: mysql -e "GRANT ALL PRIVILEGES ON wordpress.* TO kaizen@localhost IDENTIFIED BY 'kaizen123';"
+- name: Flush privileges
+  shell: mysql -e "FLUSH PRIVILEGES;"
+
+# - name: 
+#   shell: {{ item }} #or use && inside shell: touch && echo ...
+#   loop: 
+#    - echo hello
+#    - mkdir test
+#    - touch kaizen

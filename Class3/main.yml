@@ -1,0 +1,21 @@
+- hosts: all
+  vars:
+    php_version: 74 
+  tasks: 
+  - name: Install Apache
+    include: apache.yml
+  - name: Include Packages
+    include: packages.yml
+  - name: Install PHP
+    include: php.yml
+  - name: Install worpress
+    include: wordpress.yml
+  - name:
+    include: db.yml
+
+
+
+    #on a test vm copy the WP conif and insert in test vm cd /var/www/html 
+    #vi wp-config.php and insert the code. 
+    #launch and run install of wp on your test vm and remember the password. 
+    #wp shoud be up and running
