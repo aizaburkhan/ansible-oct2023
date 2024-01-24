@@ -22,13 +22,17 @@
 
 - name: Create a user
   shell: mysql -e "CREATE USER kaizen@localhost IDENTIFIED BY 'kaizen123';"
-  when: user_check.rc != 0 # when returch code is not 0, then create the user.
+  when: user_check.rc != 0 # When the return code is not 0 (the command was not successful), then create the user.
 
 - name: Grant privileges
   shell: mysql -e "GRANT ALL PRIVILEGES ON wordpress.* TO kaizen@localhost IDENTIFIED BY 'kaizen123';"
 - name: Flush privileges
   shell: mysql -e "FLUSH PRIVILEGES;"
-
+  
+# The statement FLUSH PRIVILEGES instructs TiDB to reload the in-memory copy of privileges from the privilege tables. 
+# You must execute this statement after manually editing tables such as mysql. user . 
+# However, executing this statement is not necessary after using privilege statements like GRANT or REVOKE.
+# You should use FLUSH PRIVILEGES; only if you modify the grant tables directly using statements such as INSERT, UPDATE, or DELETE.
 # - name: 
 #   shell: {{ item }} #or use && inside shell: touch && echo ...
 #   loop: 
