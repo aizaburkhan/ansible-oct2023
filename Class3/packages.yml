@@ -1,6 +1,6 @@
 - name: Install other packages
   yum: 
-   name: "{{ packages }}"
+   name: "{{ packages }}" #created a variable
   vars: 
     packages: 
     - wget
