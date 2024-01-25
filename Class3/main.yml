@@ -8,14 +8,14 @@
     include: packages.yml
   - name: Install PHP
     include: php.yml
-  - name: Install worpress
+  - name: Install Wordpress
     include: wordpress.yml
   - name:
     include: db.yml
 
 
-
-    #on a test vm copy the WP conif and insert in test vm cd /var/www/html 
-    #vi wp-config.php and insert the code. 
-    #launch and run install of wp on your test vm and remember the password. 
-    #wp shoud be up and running
+    #Final WP configuration in the browser and Remote VM CLI
+    #on a test vm copy the WP config metadata shown in the browser and paste in test vm cd /var/www/html 
+    #vi wp-config.php and paste the code. 
+    #launch and run the install of wp on your test vm and remember the password. 
+    #wp should be up and running
