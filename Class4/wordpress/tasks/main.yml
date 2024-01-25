@@ -1,0 +1,29 @@
+- name: Download wordpress
+  get_url:
+    url: "{{ url_wp }}"
+    dest: "{{ destination }}"
+
+- name: Extract wordpress on the remote machine
+  unarchive:
+    src: /tmp/wordpress.tar.gz #source of remote machine
+    dest: /tmp    #destination source
+    remote_src: yes #so it knows that it is on the remote machine
+
+- name: Copy wordpress file content with owner and permissions
+  copy:
+    src: /tmp/wordpress/. #. means everything inside the folder in Ansible
+    dest: /var/www/html/
+    owner: "{{ user }}"
+    group: "{{ group }}"
+    mode: "755"
+    remote_src: yes #so it knows to work on the remote machine
+
+- name: Template file to /bvar/www/html
+  template: 
+    src: wp-config.php.j2
+    dest: /var/www/html/wp-config.php
+
+- name: Restart service httpd, for update with wordpress
+  service:
+    name: httpd
+    state: restarted
