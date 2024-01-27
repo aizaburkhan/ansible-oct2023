@@ -1,0 +1,33 @@
+# - hosts: master #we can  not putt all bc it will change the name of all hosts
+#   tasks:
+#   - hostname: #changing the name of the vm host
+#       name: kaizen
+
+# - hosts: worker
+#   tasks:
+#   - hostname: 
+#       name: Aiza
+
+# - hosts: worker2
+#   become: yes # become "sudo" yes, or True/ False for access issue resolution 
+#   tasks:
+#   - hostname: 
+#       name: aws1 #add ansible_user=ec2-user to the hosts file so the ssh will be with no errors "unreachanble"
+
+# - hosts: worker3
+#   become: yes
+#   tasks:
+#   - hostname: 
+#       name: aws2 #need to use "sudo" so the access denied issue will be resolved.
+
+
+
+- hosts: all #this way we change the hostname of all vms according to the hots file 
+  become: yes #this sudo enablment applies to the whole code under this 
+  tasks: 
+  - hostname: 
+     name: "{{ inventory_hostname }}"
+  - debug: 
+      msg: "{{ ansible_distribution }}"
+  - name: Install Apache
+    include_tasks: "{{ ansible_distribution }}.yml"
